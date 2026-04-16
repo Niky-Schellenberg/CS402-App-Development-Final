@@ -3,7 +3,7 @@
     "name": "RecipeApp",
     "slug": "RecipeApp",
     "version": "1.0.0",
-    "icon": "./media/icon.jpg",
+    "icon": "./media/icon.svg",
     "scheme": "listapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,21 +13,21 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./media/icon.jpg"
+        "foregroundImage": "./media/icon.svg"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./media/icon.jpg"
+      "favicon": "./media/icon.svg"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./media/icon.jpg",
+          "image": "./media/icon.svg",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
