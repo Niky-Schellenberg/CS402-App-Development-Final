@@ -4,3 +4,8 @@
 
 expo-env.d.ts
 # @end expo-cli
+app.json
+package-lock.json
+package.json
+.expo/
+node_modules/
