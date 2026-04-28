@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Button, StyleSheet, Text, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent} from 'react-native';
 import RecipeItem from '../customComponents/RecipeItem';
 import {Ionicons} from '@expo/vector-icons';
+import asyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container: {

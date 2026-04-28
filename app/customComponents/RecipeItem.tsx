@@ -1,6 +1,7 @@
 import React, {use, useState} from 'react';
 import {TouchableOpacity, StyleSheet, Text, View, Image, VirtualizedList} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
+import asyncStorage from '@react-native-async-storage/async-storage';
 
 const RecipeItem = (props: any) => {
     const styles = StyleSheet.create({
