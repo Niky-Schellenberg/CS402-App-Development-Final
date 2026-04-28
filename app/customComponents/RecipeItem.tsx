@@ -135,14 +135,32 @@ const RecipeItem = (props: any) => {
         setHidden(!isHidden);
     }
 
-    function addIngredients() {
-        //
+    async function addIngredients() {
+        const fetchedList = await asyncStorage.getItem("ingredients");
+        console.log(fetchedList);
+        if(fetchedList == null) {
+            await asyncStorage.setItem("ingredients", ingredients.toString());
+        } else {
+            var toSave = fetchedList.split(",");
+            var trimmedIngredients = ingredients.filter(function(item) {
+                for(var i = 0; i < toSave.length; i++) {
+                    if(toSave[i] == item) {
+                        return;
+                    }
+                }
+                return item;
+            });
+            toSave = toSave.concat(trimmedIngredients);
+            await asyncStorage.setItem("ingredients", toSave.toString());
+            console.log(toSave);
+        }
     }
 
     function addFav() {
         //
     }
 
+    var id = 0;
     const INSTRUCTIONS = 
         <View>
             <View style={styles.buttonContainer}>
@@ -155,7 +173,7 @@ const RecipeItem = (props: any) => {
             </View>
             <View style={styles.ingredients}>
                 {combination.map((ingredient) => {
-                    return <Text style={styles.text} key={ingredient}>• {ingredient}</Text>
+                    return <Text style={styles.text} key={id++}>• {ingredient}</Text>
                 })}
             </View>
             <Text style={styles.instructions}>{recipe.strInstructions}</Text>
