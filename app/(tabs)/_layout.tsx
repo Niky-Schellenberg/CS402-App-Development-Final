@@ -7,7 +7,7 @@ export default function TabLayout() {
       <Tabs.Screen name = "Recipe" options = {{
         title: 'Recipes',
         tabBarIcon: ({color, size}) => (
-          <Ionicons name = 'book' size = {10} color= {'black'} />
+          <Ionicons name = 'book' size = {20} color= {'black'} />
         )
         }} 
       />
@@ -17,7 +17,7 @@ export default function TabLayout() {
       <Tabs.Screen name = "Ingredients" options = {{
         title: 'Ingredients',
         tabBarIcon: ({color, size}) => (
-          <Ionicons name= 'list' size = {10} color = {'black'} />
+          <Ionicons name= 'list' size = {20} color = {'black'} />
           )
         }} 
       />

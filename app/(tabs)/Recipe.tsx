@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Button, StyleSheet, Text, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent} from 'react-native';
 import RecipeItem from '../customComponents/RecipeItem';
+import {Ionicons} from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +25,14 @@ const styles = StyleSheet.create({
     padding: 2,
     fontSize: 18,
     color: '#ffffff',
+    flexGrow: 2
+  },
+  navBar: {
+    flexDirection: "row",
+  },
+  button: {
+    backgroundColor: "#5500a0",
+    padding: 5,
   },
 });
 
@@ -41,22 +50,29 @@ export default function HomeScreen() {
   }
 
   async function searchRecipe(e: TextInputSubmitEditingEvent) {
-    var toSearch = e["nativeEvent"]["text"];
-    const response = await fetch(URL + toSearch);
+    const response = await fetch(URL + e["nativeEvent"]["text"]);
     console.log("HTTP Load Response Code: " + response.status);
-    const json = await response.json();
-    setRecipes(json.meals);
+    setRecipes((await response.json()).meals);
+  }
+
+  function goFavs() {
+    //
   }
 
   return <View style={styles.container}>
-    <TextInput
-      style={styles.input}
-      onSubmitEditing={searchRecipe}
-      placeholder="Enter to search"
-      placeholderTextColor={"#dcdcdc"}
-      onChangeText={setInput}
-      value={input}
-    />
+    <View style={styles.navBar}>
+      <TextInput
+        style={styles.input}
+        onSubmitEditing={searchRecipe}
+        placeholder="Enter to search"
+        placeholderTextColor={"#dcdcdc"}
+        onChangeText={setInput}
+        value={input}
+      />
+      <TouchableOpacity style={styles.button} onPress={goFavs}>
+          <Ionicons name='star' size={30} color={'#FFF000'}/>
+      </TouchableOpacity>
+    </View>
     <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem}/>
   </View>
 }
