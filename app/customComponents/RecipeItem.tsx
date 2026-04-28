@@ -167,7 +167,6 @@ const RecipeItem = (props: any) => {
     async function changeFav() {
         const fetchedList = await asyncStorage.getItem("favorites");
         if(fetchedList == null) {
-            console.log("Empty");
             await asyncStorage.setItem("favorites", recipe.idMeal);
             generateIntructions("#FFF000");
         } else {
