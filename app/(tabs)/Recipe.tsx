@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent} from 'react-native';
+import {useRouter} from 'expo-router';
+import {TouchableOpacity, StyleSheet, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent, Text} from 'react-native';
 import RecipeItem from '../customComponents/RecipeItem';
+import {Ionicons} from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
 export default function HomeScreen() {
   const [input, setInput] = useState("");
   const [recipes, setRecipes] = useState([]);
+  const router = useRouter();
 
   const URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 
@@ -64,6 +67,9 @@ export default function HomeScreen() {
         onChangeText={setInput}
         value={input}
       />
+      <TouchableOpacity style = {styles.button} onPress ={() => router.navigate('/Favorites')}>
+        <Ionicons name='star' size={30} color= '#FFF000'/>
+      </TouchableOpacity>
     </View>
     <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem}/>
   </View>
