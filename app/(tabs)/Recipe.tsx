@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, StyleSheet, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent} from 'react-native';
+import {StyleSheet, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent} from 'react-native';
 import RecipeItem from '../customComponents/RecipeItem';
-import {Ionicons} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
