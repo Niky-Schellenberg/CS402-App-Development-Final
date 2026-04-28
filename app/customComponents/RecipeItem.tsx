@@ -128,7 +128,8 @@ const RecipeItem = (props: any) => {
 
     async function onPress() {
         if(isHidden) {
-            generateIntructions(((find(recipe.idMeal, await asyncStorage.getItem("favorites")) != false) ? "#FFFFFF" : "#FFF000"));
+            const favorites = (await asyncStorage.getItem("favorites"))?.split(",");
+            generateIntructions(((find(recipe.idMeal, favorites) != false) ? "#FFFFFF" : "#FFF000"));
         } else {
             setIntructions(<View></View>);
         }

@@ -14,6 +14,13 @@ export default function TabLayout() {
       <Tabs.Screen name = "index" options = {{
         href: null
         }} />
+      <Tabs.Screen name="Favorites" options={{
+        title: "Favorites",
+        tabBarIcon: ({color, size}) => {
+          <Ionicons name='star' size={20} color={"black"}/>
+        }
+      }}
+      />
       <Tabs.Screen name = "Ingredients" options = {{
         title: 'Ingredients',
         tabBarIcon: ({color, size}) => (

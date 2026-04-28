@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, StyleSheet, View, VirtualizedList, TextInput, TextInputSubmitEditingEvent} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, VirtualizedList} from 'react-native';
 import RecipeItem from '../customComponents/RecipeItem';
-import {Ionicons} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native';
+import asyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,11 +36,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen() {
-  const [input, setInput] = useState("");
+export default function Favorites() {
   const [recipes, setRecipes] = useState([]);
+  useEffect(() => {init();}, []);
 
-  const URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
+  const URL = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
+
+  async function init() {
+    const fetchedList = await asyncStorage.getItem("favorites");
+    if(fetchedList != null) {
+        const list = fetchedList.split(",");
+        console.log(list);
+        list.forEach(async element => {
+            const response = ((await (await fetch(URL + element)).json()).meals);
+            setRecipes(recipes.concat(response));
+        });
+    }
+  }
 
   const getListLength = () => recipes.length;
   const getListItem = (data: any, index: number) => recipes[index];
@@ -50,23 +61,7 @@ export default function HomeScreen() {
     return <RecipeItem json={onentry}/>
   }
 
-  async function searchRecipe(e: TextInputSubmitEditingEvent) {
-    const response = await fetch(URL + e["nativeEvent"]["text"]);
-    console.log("HTTP Load Response Code: " + response.status);
-    setRecipes((await response.json()).meals);
-  }
-
   return <View style={styles.container}>
-    <View style={styles.navBar}>
-      <TextInput
-        style={styles.input}
-        onSubmitEditing={searchRecipe}
-        placeholder="Enter to search"
-        placeholderTextColor={"#dcdcdc"}
-        onChangeText={setInput}
-        value={input}
-      />
-    </View>
     <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem}/>
   </View>
 }
