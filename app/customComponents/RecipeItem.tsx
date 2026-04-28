@@ -1,5 +1,5 @@
-import React, {use, useState} from 'react';
-import {TouchableOpacity, StyleSheet, Text, View, Image, VirtualizedList} from 'react-native';
+import React, {useState} from 'react';
+import {TouchableOpacity, StyleSheet, Text, View, Image} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import asyncStorage from '@react-native-async-storage/async-storage';
 
@@ -64,10 +64,10 @@ const RecipeItem = (props: any) => {
         }
     });
 
+    const recipe = props.json.item;
     const [instructions, setIntructions] = useState(<View></View>);
     const [isHidden, setHidden] = useState(true);
 
-    const recipe = props.json.item;
     // There really doesn't seem to be a better way due to how the api gives data
     var ingredients = [
         recipe.strIngredient1,
@@ -126,49 +126,75 @@ const RecipeItem = (props: any) => {
         combination[i] += " " + ingredients[i];
     }
 
-    function onPress() {
+    async function onPress() {
         if(isHidden) {
-            setIntructions(INSTRUCTIONS);
+            generateIntructions(((find(recipe.idMeal, await asyncStorage.getItem("favorites")) != false) ? "#FFFFFF" : "#FFF000"));
         } else {
             setIntructions(<View></View>);
         }
         setHidden(!isHidden);
     }
 
-    async function addIngredients() {
-        const fetchedList = await asyncStorage.getItem("ingredients");
-        console.log(fetchedList);
+    function find(item: any, list: any) {
+        if(list != null) {
+            for(var i = 0; i < list.length; i++) {
+                if(list[i] == item) {
+                    return false;
+                }
+            }
+        }
+        return item;
+    }
+
+    async function saveList(listName: string, list: any) {
+        const fetchedList = await asyncStorage.getItem(listName);
         if(fetchedList == null) {
-            await asyncStorage.setItem("ingredients", ingredients.toString());
+            await asyncStorage.setItem(listName, list.toString());
         } else {
             var toSave = fetchedList.split(",");
-            var trimmedIngredients = ingredients.filter(function(item) {
-                for(var i = 0; i < toSave.length; i++) {
-                    if(toSave[i] == item) {
-                        return;
-                    }
-                }
-                return item;
+            const trimmedList = list.filter(function(item: any) {
+                return find(item, toSave);
             });
-            toSave = toSave.concat(trimmedIngredients);
-            await asyncStorage.setItem("ingredients", toSave.toString());
-            console.log(toSave);
+            toSave = toSave.concat(trimmedList);
+            await asyncStorage.setItem(listName, toSave.toString());
         }
     }
 
-    function addFav() {
-        //
+    async function addIngredients() {
+        saveList("ingredients", ingredients);
     }
 
-    var id = 0;
-    const INSTRUCTIONS = 
-        <View>
+    async function changeFav() {
+        const fetchedList = await asyncStorage.getItem("favorites");
+        if(fetchedList == null) {
+            console.log("Empty");
+            await asyncStorage.setItem("favorites", recipe.idMeal);
+            generateIntructions("#FFF000");
+        } else {
+            var compareTo = fetchedList.split(",");
+            for(var i = 0; i < compareTo.length; i++) {
+                if(compareTo[i] == recipe.idMeal) {
+                    compareTo = compareTo.filter(function(item) {return item != recipe.idMeal});
+                    await asyncStorage.setItem("favorites", compareTo.toString());
+                    generateIntructions("#FFFFFF");
+                    return;
+                }
+            }
+            compareTo = compareTo.concat(recipe.idMeal);
+            await asyncStorage.setItem("favorites", compareTo.toString());
+            generateIntructions("#FFF000");
+        }
+    }
+
+    function generateIntructions(starColor: string) { 
+        var id = 0;
+        setIntructions(<View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={addIngredients}>
                     <Text style={styles.text}>Add Ingredients to List</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={addFav}>
-                    <Ionicons name='star' size={30} color={'#FFFFFF'}/>
+                <TouchableOpacity style={styles.button} onPress={changeFav}>
+                    <Ionicons name='star' size={30} color={starColor}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.ingredients}>
@@ -177,7 +203,7 @@ const RecipeItem = (props: any) => {
                 })}
             </View>
             <Text style={styles.instructions}>{recipe.strInstructions}</Text>
-        </View>
+        </View>);}
     
     return <View style={styles.container}>
         <TouchableOpacity style={styles.mainView} onPress={onPress}>
