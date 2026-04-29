@@ -3,11 +3,22 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   return (
-    <Tabs>
+    <Tabs 
+    screenOptions = {{
+      headerStyle: {
+        backgroundColor: '#353535'
+      },
+      headerTintColor: 'white',
+      tabBarStyle: {
+        backgroundColor: '#353535'
+      },
+      tabBarActiveTintColor: '#a259e2c9'
+    }}
+    >
       <Tabs.Screen name = "Recipe" options = {{
         title: 'Recipes',
         tabBarIcon: ({color, size}) => (
-          <Ionicons name = 'book' size = {20} color= {'black'} />
+          <Ionicons name = 'book' size = {20} color= {'white'} />
         )
         }} 
       />
@@ -17,7 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen name = "Ingredients" options = {{
         title: 'Ingredients',
         tabBarIcon: ({color, size}) => (
-          <Ionicons name= 'list' size = {20} color = {'black'} />
+          <Ionicons name= 'list' size = {20} color = {'white'} />
           )
         }} 
       />

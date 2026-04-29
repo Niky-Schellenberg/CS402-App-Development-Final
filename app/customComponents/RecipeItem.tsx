@@ -10,7 +10,7 @@ const RecipeItem = (props: any) => {
             flex: 1,
             width: "100%",
             borderWidth: 5,
-            borderColor: '#fff000',
+            borderColor: '#585851d7',
         },
         mainView: {
             flex: 1,
@@ -21,7 +21,7 @@ const RecipeItem = (props: any) => {
         },
         image: {
             borderWidth: 5,
-            borderColor: '#5500a0',
+            borderColor: '#a259e2c9',
             padding: 5,
             fontSize: 20,
             margin: 5,
@@ -47,7 +47,7 @@ const RecipeItem = (props: any) => {
             justifyContent: "space-around"
         },
         button: {
-            backgroundColor: "#5500a0",
+            backgroundColor: "#a259e2c9",
             padding: 5,
         },
         text: {

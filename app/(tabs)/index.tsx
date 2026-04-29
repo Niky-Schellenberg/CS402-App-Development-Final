@@ -6,10 +6,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: '#353535'
   },
   welcome: {
-    fontSize: 32
+    fontSize: 32,
+    color: 'white'
   },
 });
 

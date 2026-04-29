@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   input: {
     margin: 5,
     borderWidth: 5,
-    borderColor: '#fff000',
+    borderColor: '#585851d7',
     backgroundColor: '#000000',
     padding: 2,
     fontSize: 18,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    backgroundColor: "#5500a0",
+    backgroundColor: "#a259e2c9",
     padding: 5,
   },
 });
