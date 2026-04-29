@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
+import { useFocusEffect } from 'expo-router';
 import {StyleSheet, View, VirtualizedList, Text, TouchableOpacity} from 'react-native';
 import IngredientItem from '../customComponents/IngredientItem';
 import asyncStorage from '@react-native-async-storage/async-storage';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   input: {
     margin: 5,
     borderWidth: 5,
-    borderColor: '#fff000',
+    borderColor: '#585851d7',
     backgroundColor: '#000000',
     padding: 2,
     fontSize: 18,
@@ -31,13 +32,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    backgroundColor: "#5500a0",
+    backgroundColor: "#a259e2c9",
     padding: 5,
   },
 });
 
 export default function HomeScreen() {
   const [ingredients, setIngredients] = useState([""]);
+  const [allChecked, setAllChecked] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [])
+  );
 
   const getListLength = () => ingredients.length;
   const getListItem = (data: any, index: number) => ingredients[index];
@@ -60,14 +68,26 @@ export default function HomeScreen() {
     await refresh();
   }
 
-  refresh();
 
   return <View style={styles.container}>
     <View style={styles.navBar}>
+      <TouchableOpacity style = {styles.button} onPress={() => setAllChecked(true)}>
+        <Text style = {styles.text}> Check All</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style = {styles.button} onPress = {() => setAllChecked(false)}>
+        <Text style = {styles.text}> Uncheck All </Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={clear}>
         <Text style={styles.text}>Clear List</Text>
       </TouchableOpacity>
     </View>
-    <VirtualizedList style={styles.list} data={ingredients} renderItem={listItem} getItemCount={getListLength} getItem={getListItem}/>
+    <VirtualizedList 
+    style={styles.list} 
+    data={ingredients} 
+    renderItem={(item) => <IngredientItem ingredient = {item} rerender={refresh} allChecked = {allChecked} />} 
+    getItemCount={getListLength} 
+    getItem={getListItem}
+    keyExtractor={(item, index) => item.toString()}
+    />
   </View>
 }

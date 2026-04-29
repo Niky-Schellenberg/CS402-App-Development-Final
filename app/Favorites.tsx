@@ -38,7 +38,12 @@ const styles = StyleSheet.create({
 
 export default function Favorites() {
   const [recipes, setRecipes] = useState<any[]>([]);
-  useEffect(() => {init();}, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      init();
+    }, 1000);
+    return() => clearTimeout(timer);
+  }, []);
 
   const URL = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
 
@@ -74,6 +79,13 @@ export default function Favorites() {
   }
 
   return <View style={styles.container}>
-    <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem}/>
+    <VirtualizedList 
+    style={styles.list} 
+    data={recipes} 
+    renderItem={listItem} 
+    getItemCount={getListLength} 
+    getItem={getListItem}
+    keyExtractor={(item, index) => item?.idMeal ?? index.toString()}
+    />
   </View>
 }

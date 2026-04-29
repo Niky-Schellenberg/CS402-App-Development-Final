@@ -149,15 +149,16 @@ const RecipeItem = (props: any) => {
 
     async function saveList(listName: string, list: any) {
         const fetchedList = await asyncStorage.getItem(listName);
-        if(fetchedList == null) {
+        if(fetchedList == null || fetchedList == "") {
             await asyncStorage.setItem(listName, list.toString());
         } else {
             var toSave = fetchedList.split(",");
-            const trimmedList = list.filter(function(item: any) {
-                return find(item, toSave);
-            });
-            toSave = toSave.concat(trimmedList);
-            await asyncStorage.setItem(listName, toSave.toString());
+            const duplicate = fetchedList.split(",").map((i: string) => i.trim());
+            const trimmedList = list.filter((item: string) => !duplicate.includes(item.trim()));
+            if(trimmedList.length > 0){
+                toSave = toSave.concat(trimmedList);
+                await asyncStorage.setItem(listName, toSave.toString());
+            }
         }
     }
 
