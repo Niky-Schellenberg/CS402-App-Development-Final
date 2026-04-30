@@ -126,6 +126,10 @@ const RecipeItem = (props: any) => {
         combination[i] += " " + ingredients[i];
     }
 
+    function getId() {
+        return recipe.idMeal;
+    }
+
     async function onPress() {
         if(isHidden) {
             const favorites = (await asyncStorage.getItem("favorites"))?.split(",");
@@ -147,13 +151,28 @@ const RecipeItem = (props: any) => {
         return item;
     }
 
+    function deduplicate(list: any) {
+        var cleaned: any = [];
+        for(var i = 0; i < list.length; i++) {
+            var index = list.findLastIndex((item: any) => item == list[i]);
+            console.log(index);
+            if(index == i) {
+                cleaned = cleaned.concat(list[i]);
+            }
+        }
+        return cleaned;
+    }
+
     async function saveList(listName: string, list: any) {
         const fetchedList = await asyncStorage.getItem(listName);
+        list = deduplicate(list);
+        console.log("After");
+        console.log(list);
         if(fetchedList == null || fetchedList == "") {
             await asyncStorage.setItem(listName, list.toString());
         } else {
             var toSave = fetchedList.split(",");
-            const duplicate = fetchedList.split(",").map((i: string) => i.trim());
+            const duplicate = toSave.map((i: string) => i.trim());
             const trimmedList = list.filter((item: string) => !duplicate.includes(item.trim()));
             if(trimmedList.length > 0){
                 toSave = toSave.concat(trimmedList);
@@ -162,8 +181,9 @@ const RecipeItem = (props: any) => {
         }
     }
 
+    // If you want to save both `measurements` and `ingredients` in the same array, use the `comination` array.
     async function addIngredients() {
-        saveList("ingredients", ingredients);
+        saveList("ingredients", combination);
     }
 
     async function changeFav() {

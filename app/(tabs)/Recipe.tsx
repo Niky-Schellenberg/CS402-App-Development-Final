@@ -71,6 +71,6 @@ export default function HomeScreen() {
         <Ionicons name='star' size={30} color= '#FFF000'/>
       </TouchableOpacity>
     </View>
-    <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem}/>
+    <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem} keyExtractor={(item: any, index: any) => index}/>
   </View>
 }
