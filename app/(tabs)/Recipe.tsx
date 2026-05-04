@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 
 export default function HomeScreen() {
   const [input, setInput] = useState("");
+  const [lastSearch, setLastSearch] = useState("");
   const [recipes, setRecipes] = useState([]);
   const router = useRouter();
 
@@ -54,7 +55,9 @@ export default function HomeScreen() {
   async function searchRecipe(e: TextInputSubmitEditingEvent) {
     const response = await fetch(URL + e["nativeEvent"]["text"]);
     console.log("HTTP Load Response Code: " + response.status);
-    setRecipes((await response.json()).meals);
+    let meals = (await response.json()).meals;
+    setLastSearch(input);
+    setRecipes(meals ? meals : []); // return an empty array when no recipes are found
   }
 
   return <View style={styles.container}>
@@ -71,6 +74,7 @@ export default function HomeScreen() {
         <Ionicons name='star' size={30} color= '#FFF000'/>
       </TouchableOpacity>
     </View>
+    {lastSearch !== '' ? <Text style={styles.text}>{recipes.length} Results for "{lastSearch}"</Text> : <Text style={styles.text}>Search for Recipes</Text>}
     <VirtualizedList style={styles.list} data={recipes} renderItem={listItem} getItemCount={getListLength} getItem={getListItem} keyExtractor={(item: any, index: any) => index}/>
   </View>
 }
