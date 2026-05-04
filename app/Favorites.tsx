@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, VirtualizedList} from 'react-native';
+import {StyleSheet, View, VirtualizedList, TouchableOpacity, Text} from 'react-native';
 import RecipeItem from './customComponents/RecipeItem';
 import asyncStorage from '@react-native-async-storage/async-storage';
+import {useRouter} from 'expo-router';
+import {Ionicons} from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,15 +35,17 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#a259e2c9",
     padding: 5,
-  },
+  }
 });
 
 export default function Favorites() {
   const [recipes, setRecipes] = useState<any[]>([]);
+  const router = useRouter();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       init();
-    }, 1000);
+    }, 200);
     return() => clearTimeout(timer);
   }, []);
 
@@ -78,7 +82,20 @@ export default function Favorites() {
     return <RecipeItem json={onentry}/>
   }
 
+  async function clear() {
+    await asyncStorage.setItem("favorites", "");
+    setRecipes([]);
+  }
+
   return <View style={styles.container}>
+    <View style={styles.navBar}>
+      <TouchableOpacity style = {styles.button} onPress ={() => router.navigate('/(tabs)/Recipe')}>
+        <Ionicons name='arrow-back' size={30} color= '#FFFFFF'/>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={clear}>
+              <Text style={styles.text}>Clear List</Text>
+      </TouchableOpacity>
+    </View>
     <VirtualizedList 
     style={styles.list} 
     data={recipes} 
