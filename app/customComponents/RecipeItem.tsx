@@ -188,21 +188,23 @@ const RecipeItem = (props: any) => {
 
     async function changeFav() {
         const fetchedList = await asyncStorage.getItem("favorites");
-        if(fetchedList == null) {
+        if(fetchedList == "") {
             await asyncStorage.setItem("favorites", recipe.idMeal);
             generateIntructions("#FFF000");
         } else {
-            var compareTo = fetchedList.split(",");
-            for(var i = 0; i < compareTo.length; i++) {
-                if(compareTo[i] == recipe.idMeal) {
-                    compareTo = compareTo.filter(function(item) {return item != recipe.idMeal});
-                    await asyncStorage.setItem("favorites", compareTo.toString());
+            if (fetchedList.includes(recipe.idMeal)) {
+                    var filtered = fetchedList.split(",").filter(function(item) {return item != recipe.idMeal});
+                    await asyncStorage.setItem("favorites", filtered.toString());
                     generateIntructions("#FFFFFF");
                     return;
-                }
+            }
+
+            var compareTo = fetchedList.split(",");
+            for(var i = 0; i < compareTo.length; i++) {
+
             }
             compareTo = compareTo.concat(recipe.idMeal);
-            await asyncStorage.setItem("favorites", compareTo.toString());
+            await asyncStorage.setItem("favorites", fetchedList + "," + recipe.idMeal);
             generateIntructions("#FFF000");
         }
     }

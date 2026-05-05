@@ -54,14 +54,13 @@ export default function Favorites() {
   async function init() {
     try {
     const fetchedList = await asyncStorage.getItem("favorites");
-    if(fetchedList != null) {
+    if(fetchedList != "") {
         const list = fetchedList.split(",");
-        console.log(list);
         const results = await Promise.all(
         list.map(async element =>{
           try{
-          const response = await (await fetch(URL + element)).json();
-          return response.meals[0];
+            const response = await (await fetch(URL + element)).json();
+            return response.meals[0];
           } catch (e) {
             console.log("Failed to fetch meal: " + element);
             return null;
