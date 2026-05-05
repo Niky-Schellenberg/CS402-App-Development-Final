@@ -193,17 +193,12 @@ const RecipeItem = (props: any) => {
             generateIntructions("#FFF000");
         } else {
             if (fetchedList.includes(recipe.idMeal)) {
-                    var filtered = fetchedList.split(",").filter(function(item) {return item != recipe.idMeal});
-                    await asyncStorage.setItem("favorites", filtered.toString());
-                    generateIntructions("#FFFFFF");
-                    return;
+                var filtered = fetchedList.split(",").filter(function(item) {return item != recipe.idMeal});
+                await asyncStorage.setItem("favorites", filtered.toString());
+                generateIntructions("#FFFFFF");
+                return;
             }
 
-            var compareTo = fetchedList.split(",");
-            for(var i = 0; i < compareTo.length; i++) {
-
-            }
-            compareTo = compareTo.concat(recipe.idMeal);
             await asyncStorage.setItem("favorites", fetchedList + "," + recipe.idMeal);
             generateIntructions("#FFF000");
         }
