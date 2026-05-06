@@ -166,8 +166,6 @@ const RecipeItem = (props: any) => {
     async function saveList(listName: string, list: any) {
         const fetchedList = await asyncStorage.getItem(listName);
         list = deduplicate(list);
-        console.log("After");
-        console.log(list);
         if(fetchedList == null || fetchedList == "") {
             await asyncStorage.setItem(listName, list.toString());
         } else {
