@@ -56,7 +56,7 @@ export default function HomeScreen() {
 
   async function refresh() {
     const fetchedList = await asyncStorage.getItem("ingredients");
-    if(fetchedList != "") {
+    if(fetchedList != "" && fetchedList != null) {
       setIngredients(fetchedList.split(","));
     } else {
       setIngredients([]);

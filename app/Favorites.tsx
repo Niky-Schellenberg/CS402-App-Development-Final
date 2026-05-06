@@ -54,7 +54,7 @@ export default function Favorites() {
   async function init() {
     try {
     const fetchedList = await asyncStorage.getItem("favorites");
-    if(fetchedList != "") {
+    if(fetchedList != "" && fetchedList != null) {
         const list = fetchedList.split(",");
         const results = await Promise.all(
         list.map(async element =>{

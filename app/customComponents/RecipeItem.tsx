@@ -186,7 +186,7 @@ const RecipeItem = (props: any) => {
 
     async function changeFav() {
         const fetchedList = await asyncStorage.getItem("favorites");
-        if(fetchedList == "") {
+        if(fetchedList == "" || fetchedList == null) {
             await asyncStorage.setItem("favorites", recipe.idMeal);
             generateIntructions("#FFF000");
         } else {
